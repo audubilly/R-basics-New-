@@ -1,0 +1,13 @@
+---
+title: "Data Analysis session 2"
+author: "Billy"
+date: "3/12/2021"
+output: html_document
+---
+
+
+
+```{r}
+#Laod Data
+
+```
