@@ -8,6 +8,150 @@ output: html_document
 
 
 ```{r}
-#Laod Data
+#Load Data
+dt<-read.table("data_r/who_1.csv", header = T, sep = ",")
+head(dt)
 
+
+```
+
+```{r}
+#Load Data
+dt2<-read.table("data_r/potatoes.txt", header = F, sep = "\t")
+head(dt2)
+dt2[1:10, 1:4]
+
+```
+```{r}
+#Load Data
+dt3<-read.table("data_r/who_2_semi.csv", header = T, sep = ";")
+head(dt3)
+dt3[1:10, 1:4]
+
+
+```
+```{r}
+dt4<-read.csv2("data_r/who_2_semi.csv", header = T)
+head(dt4)
+dt4[1:4, 1:4]
+```
+```{r}
+dt5<-read.delim("data_r/potatoes.txt", header = F)
+head(dt5)
+dt5[1:4, ]
+```
+
+read_csv() : comma delimited files
+read_csv2(): semicolon delimited files
+read_tsv(); tab delimited files
+read_delim(): any delimited files 
+
+
+```{r}
+sht1 <- read_excel("data_r/Employees.xlsx", sheet = 1)
+sht2 <- read_excel("data_r/Employees.xlsx", sheet = 2)
+sht1[1:4, 1:4]
+```
+```{r}
+library(DBI)
+library(RMySQL)
+host<- "courses.csrrinzqubik.us-east-1.rds.amazonaws.com"
+connect <- dbConnect(RMySQL::MySQL(), dbname = "tweater", host = host, port=3306, user = "student", password="datacamp")
+```
+
+
+```{r}
+tables<- dbListTables(connect)
+tables
+```
+
+```{r}
+users <- dbReadTable(connect, "users")
+users
+```
+
+```{r}
+write.csv(users, "users.csv")
+users
+```
+```{r}
+house <- read.csv("https://factual.ng/course/house.csv", header = T)
+house[1:4,1:4]
+```
+
+```{r}
+library(haven)
+birth <- read_sas("data_r/birth1.sas7bdat")
+birth[1:4, 1:4]
+```
+```{r}
+alcohol <- read_dta("data_r/alcohol.dta")
+alcohol[1:4]
+```
+
+```{r}
+pers <- read_sav("data_r/personality.sav")
+pers[1:4]
+```
+```{r}
+dta <- read_excel("data_r/mbta.xlsx", skip = 1, range = cell_cols(2:60))
+glimpse(dta)
+```
+```{r}
+library(tidyverse)
+glimpse(dta)
+```
+```{r}
+dta_1 <- dta %>% gather(`2007-01`:`2011-10`, key = "year", value = "passengers")
+dta_1[1:4, ]
+```
+```{r}
+dta_2 <- dta_1 %>% separate(year, into = c("year", "month"))
+dta_2[1:4,]
+```
+```{r}
+dta_3 <- dta_2 %>% spread(mode,passengers)
+dta_3[1:4,]
+```
+```{r}
+dta_4 <- dta_3 %>% .[,c(1:2,6:8)]
+dta_4[1:4,]
+```
+```{r}
+dta_5 <- dta_4 %>% gather(`Commuter Rail`:`Light Rail`, key = "rail_type", value = passengers) 
+dta_5[1:4, ]
+```
+```{r}
+library(hflights)
+data(hflights)
+glimpse(hflights)
+hflights[1:4,1:4]
+```
+```{r}
+data("hflights")
+f1 <- filter(hflights, Year == 2011, Month == 2)
+f1[1:4, 1:4]
+```
+```{r}
+f2<- filter(hflights, Dest %in% c("BOS", "LAS"))
+f2[1:4, 12:15]
+```
+```{r}
+f3 <- filter(hflights, between(Distance, 224,994))
+f3[1:6,13:16]
+```
+```{r}
+f6  <- filter(hflights, Year == 2011, Montbh == 4)
+f6
+```
+```{r}
+f7<- filter(hflights, UniqueCarrier %in% c("AA", "WN"))
+f7
+```
+```{r}
+m <-hflights %>% select(ends_with("Delay"), Distance, AirTime) %>% mutate(time_gain = ArrDelay - DepDelay, speed = Distance / AirTime * 60)
+m[1:4,1:6]
+```
+```{r}
+summarise(hflights, Delay = sum(DepDelay, na.rm = TRUE))
 ```
