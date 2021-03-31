@@ -127,6 +127,7 @@ data(hflights)
 glimpse(hflights)
 hflights[1:4,1:4]
 ```
+
 ```{r}
 data("hflights")
 f1 <- filter(hflights, Year == 2011, Month == 2)
@@ -154,4 +155,261 @@ m[1:4,1:6]
 ```
 ```{r}
 summarise(hflights, Delay = sum(DepDelay, na.rm = TRUE))
+```
+```{r}
+library(tidyverse)
+b1 <-ggplot(gy ,aes(x = Product , fill=Product)) + geom_bar()+ labs(x = "Product" , y = "Frequency", title = "Distribution of Products")+ geom_text(stat='count',aes(label=..count..),vjust=-0.3)
+b2
+```
+```{r}
+library(tidyverse)
+gy<-read.csv("data_r/gym.csv", header = T,)
+glimpse(gy)
+```
+
+```{r}
+library(tidyverse)
+b1 <-ggplot(gy ,aes(x = Product , fill=Product)) + geom_bar()+ labs(x = "Product" , y = "Frequency", title = "Distribution of Products")+ geom_text(stat='count',aes(label=..count..),vjust=-0.3)
+b1
+```
+```{r}
+gy$Product<-as.factor(gy$Product)
+gy$Gender<-as.factor(gy$Gender)
+gy$MaritalStatus<-as.factor(gy$MaritalStatus)
+```
+```{r}
+b2<-ggplot(gy,aes(x = Gender, fill=Gender))+geom_bar()+
+labs(x="Gender",y="Frequency",
+title="Distribution of Gender")+
+geom_text(stat='count',aes(label=..count..),vjust=-0.3)
+b2
+```
+```{r}
+library(gridExtra)
+library(scales)
+p1 <-ggplot(gy,aes(x = Income)) + geom_histogram(color = "black", fill= "gray") + scale_x_continuous(labels = comma)+ labs(title = "Histogram of Income", x = "Income", y = "Frequency")
+
+p2<- ggplot(gy, aes(x = Income)) +
+geom_boxplot(color = "black", fill = "gray")+
+scale_x_continuous(labels = comma)+
+labs(title = "Boxplot of Income",x="Income")
+grid.arrange(p2, p1, heights = c(1, 1))
+```
+```{r}
+hist(gy $ Income)
+```
+
+```{r}
+p3<-ggplot(gy, aes(x = Education)) +
+geom_histogram(color = "black", fill = "gray")+
+scale_x_continuous(labels = comma)+
+labs(title = "Histogram of Education",
+x="Education",y="Frequency")
+
+p4<- ggplot(gy, aes(x = Education)) +
+geom_boxplot(color = "black", fill = "gray")+
+scale_x_continuous(labels = comma)+
+labs(title = "Boxplot of Education",x="Education")
+grid.arrange(p4, p3, heights = c(1, 1))
+```
+```{r}
+p5<-ggplot(gy, aes(x = Age)) +
+geom_histogram(color = "black", fill = "gray")+
+scale_x_continuous(labels = comma)+
+labs(title = "Histogram of Age",
+x="Age",y="Frequency")
+p6<- ggplot(gy, aes(x = Age)) +
+geom_boxplot(color = "black", fill = "gray")+
+scale_x_continuous(labels = comma)+
+labs(title = "Boxplot of Age",x="Age")
+grid.arrange(p5, p6, heights = c(1, 1))
+```
+```{r}
+b4<-ggplot(gy,aes(x =Product, fill=Gender))+
+geom_bar(position = "dodge")+
+labs(x="Products",y="Frequency",
+title="Product Buyers by Gender")
+b4_1<-b4+geom_text(stat='count',aes(label=..count..)
+,position=position_dodge(width=0.9),
+vjust=-0.25)
+b5<-ggplot(gy,aes(x =Product, fill=MaritalStatus))+
+geom_bar(position = "dodge")+
+labs(x="Products",y="Frequency",
+title="Product Buyers by Marital Status")
+b5_1<- b5+geom_text(stat='count',aes(label=..count..),
+position=position_dodge(width=0.9),
+vjust=-0.25)
+b4_1
+b5_1
+```
+```{r}
+bi1 <- ggplot(gy, aes(x=Product, y=Age, fill=Product)) +
+geom_boxplot()+
+labs(x= "Product", y= "Age",title="Product by Age")
+bi1
+```
+
+```{r}
+bi2<-ggplot(gy,aes(x=Product,y=Education
+,fill=Product)) +geom_boxplot()+
+labs(x= "Product", y= "Education",
+title="Product by Education")
+bi2
+```
+```{r}
+bi3<- ggplot(gy, aes(x=Product, y=Income
+, fill=Product)) + geom_boxplot()+
+scale_y_continuous(labels = comma)+
+labs(x= "Product", y= "Income",
+title="Product by Income")
+bi3
+```
+
+```{r}
+bi6<- ggplot(gy, aes(x=Age, y=Income)) + geom_point()+
+scale_y_continuous(labels = comma)+
+labs(x= "Age", y= "Income",
+title="Income and Age")
+bi6
+```
+```{r}
+gy <- read.csv("data_r/gym.csv", header = T)
+glimpse(gy)
+result <- t.test(gy$Age~gy$MaritalStatus,alternative = "two.sided")
+result
+```
+
+
+
+```{r}
+children <- c(40.3,55.0,45.7,43.3,50.3,45.9,53.5,43.0,44.2,44.0,33.6,55.1,48.8,50.4,37.8,60.3,46.6,47.4,44.0)
+
+result<-t.test(children, mu=20, alternative = "less")
+result
+```
+
+
+```{r}
+Children <- c(40.3,55.0,45.7,43.3,50.3,45.9,53.5,43.0,44.2,44.0,33.6,55.1,48.8,50.4,37.8,60.3,46.6,47.4,44.0)
+
+Adult <- c(20.0,30.2,2.2,7.5,4.4,22.2,16.6,14.5,21.4,3.3,10.0,1.0,4.4,1.3,8.1,6.6,7.8,10.6,16.2,14.5,4.1,15.8,4.1,2.4,3.5,8.5,4.7,18.4)
+
+result2<-t.test(Children, Adult,
+alternative = "two.sided")
+
+result2
+```
+
+```{r}
+library(tidyverse)
+Children_df <- data.frame(Children = Children)
+Children_df
+```
+```{r}
+Adult_df <- data.frame(Adult = Adult)
+Adult_df
+```
+```{r}
+b1 <- ggplot(Children_df,aes(x = Children))+geom_boxplot()+
+labs(x="Weight (%)",
+title="Children sugar content")
+b1
+```
+```{r}
+b2 <- ggplot(Adult_df,aes(x = Adult))+geom_boxplot()+
+labs(x="Weight (%)",
+title="Adult sugar content")
+b2
+```
+
+```{r}
+ALL <- c(835,935,1665,764,1323,1030,1482,1306,593,2375,542,809,2474,1514,1977,1235,933,1114,-9,3702,608,499,1740,1189,1870,892,677)
+
+AmL <- c(3237,1125,4655,3807,3593,2701,1737,3552,3255,4249,1870)
+
+result3 <-t.test(Children, Adult,
+alternative = "two.sided")
+
+result3
+```
+```{r}
+miles_driven <- c(25,27,35,42,28,37,40,31,29,33,30,26,31,28,30)
+
+result<-t.test(miles_driven, mu=35000, alternative = "greater")
+
+result
+```
+
+
+```{r}
+dt <- read.csv("data_r/Gym.csv", header = T)
+dt
+``
+
+`
+```{r}
+library(ggplot2)
+p1<-ggplot(dt, aes(x=Age, y=Income))+geom_point()+
+labs(title = "Relationship between Income and Age",
+xlab="Age", ylab="Income")
+p1
+```
+
+```{r}
+cor(dt$Age,dt$Income)
+```
+
+
+```{r}
+m1<-lm(Income~Age, data = dt)
+summary(m1)
+```
+```{r}
+m2<-lm(Income~Age+Education, data = dt)
+summary(m2)
+```
+```{r}
+newdata<-data.frame(Age=c(50), Education=c(15))
+newdata
+```
+```{r}
+predict(m2, newdata = newdata, interval = 'prediction')
+```
+
+```{r}
+dt <- read.csv("data_r/house.csv", header = T)
+dt
+```
+```{r}
+library(ggplot2)
+p1<-ggplot(dt, aes(x=Location, y=Price))+geom_point()+
+labs(title = "Relationship between Location and Price",
+xlab="Location", ylab="Price")
+p1
+```
+
+```{r}
+cor(dt$Bedrooms,dt$Bathrooms)
+```
+```{r}
+library(ggplot2)
+p1<-ggplot(dt, aes(x=Bedrooms, y=Bathrooms))+geom_point()+
+labs(title = "Relationship between Bedrooms and Bathrooms",
+xlab="Bedrooms", ylab="Bathrooms")
+p1
+```
+
+```{r}
+m1<-lm(Price~Price.SQFT, data = dt)
+summary(m1)
+```
+```{r}
+m1<-lm(Price~Bedrooms+Bathrooms+Price.SQFT, data = dt)
+summary(m1)
+```
+
+```{r}
+m1<-lm(Price~., data = dt)
+summary(m1)
+vif(m1)
 ```
